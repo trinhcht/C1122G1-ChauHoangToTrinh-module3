@@ -1,35 +1,35 @@
 create database quan_ly_ban_hang;
 use quan_ly_ban_hang;
 create table customer(
-c_id int primary key auto_increment,
-c_name varchar(225),
-c_age int
+customer_id int primary key auto_increment,
+customer_name varchar(225),
+customer_age int
 );
 create table product(
-p_id int primary key,
-p_name varchar(225),
-p_price float
+product_id int primary key,
+product_name varchar(225),
+product_price float
 );
 create table `order`(
-o_id int primary key auto_increment,
-o_date date,
-o_total_price float,
-c_id int,
-foreign key (c_id) references customer(c_id)
+order_id int primary key auto_increment,
+order_date date,
+order_total_price float,
+customer_id int,
+foreign key (customer_id) references customer(customer_id)
 );
 create table order_detail(
-o_id int,
-p_id int,
-od_qty int,
-primary key (o_id, p_id),
-foreign key (o_id) references `order`(o_id),
-foreign key (p_id) references product(p_id)
+order_id int,
+product_id int,
+order_qty int,
+primary key (order_id, product_id),
+foreign key (order_id) references `order`(order_id),
+foreign key (product_id) references product(product_id)
 );
-insert into customer(c_name, c_age)
+insert into customer(customer_name, customer_age)
 value ('nguyen van a', 25),
 ('nguyen van b', 28),
 ('nguyen van c', 30);
-insert into product(p_id, p_name, p_price)
+insert into product(product_id, product_name, product_price)
 value(0013, 'banh', 50000),
 (0103, 'keo', 20000),
 (0222, 'cam', 30000),
@@ -41,3 +41,9 @@ value(0013, 'banh', 50000),
 (1672, 'thit', 80000),
 (2172, 'sua', 30000),
 (3261, 'ca rot', 15000);
+insert into `order`(order_date, order_total_price,customer_id)
+value ('2023-02-20', 70000,1),
+('2023-02-21',50000,2);
+insert into order_detail(order_id, product_id,order_qty)
+value (1,0013,1),
+(2,0425,2);
