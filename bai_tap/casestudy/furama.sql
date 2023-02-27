@@ -180,15 +180,28 @@ value (5, 2, 4),
       (1, 1, 3),
       (2, 1, 2),
       (2, 12, 2);
-
-
-
-
-
-
-
-
-select * from khu_du_lich.nhan_vien
-where (ho_ten like '%h%' or ho_ten like '%t%' or ho_ten like '%K%') ;
-select * from khu_du_lich.khach_hang as k
-where datediff(now(), ngay_sinh) between 18 and 50 and(dia_chi= 'da nang' or dia_chi = 'quang tri')
+-- 2.	Hiển thị thông tin của tất cả nhân viên có trong hệ thống có tên bắt đầu là một trong các ký tự “H”, “T” hoặc “K” và có tối đa 15 kí tự.
+select * from furama.nhan_vien
+where (ho_ten like '%t%' or ho_ten like '%h%' or ho_ten like '%k%') and ho_ten REGEXP '^[HTK].{0,15}$';
+-- Hiển thị thông tin của tất cả khách hàng có độ tuổi từ 18 đến 50 tuổi và có địa chỉ ở “Đà Nẵng” hoặc “Quảng Trị”.
+select *
+from khach_hang
+where (year(curdate()) - year(ngay_sinh)) between 18 and 50
+and dia_chi like '%Đà Nẵng'
+or dia_chi like '%Quảng Trị';
+-- Đếm xem tương ứng với mỗi khách hàng đã từng đặt phòng bao nhiêu lần. Kết quả hiển thị được sắp xếp tăng dần theo số lần đặt phòng của khách hàng. Chỉ đếm những khách hàng nào có Tên loại khách hàng là “Diamond”.
+select count(h.ma_khach_hang) as co,k.* from furama.khach_hang as k join furama.hop_dong as h on k.ma_khach_hang = h.ma_khach_hang
+join furama.loai_khach as l on k.ma_loai_khach = l.ma_loai_khach
+where l.ten_loai_khach = 'Diamond'
+group by h.ma_khach_hang
+order by co;
+-- Hiển thị ma_khach_hang, ho_ten, ten_loai_khach, ma_hop_dong, ten_dich_vu, ngay_lam_hop_dong, ngay_ket_thuc, tong_tien (Với tổng tiền được tính theo công thức như sau: Chi Phí Thuê + Số Lượng * Giá, với Số Lượng và Giá là từ bảng dich_vu_di_kem, hop_dong_chi_tiet) cho tất cả các khách hàng đã từng đặt phòng. (những khách hàng nào chưa từng đặt phòng cũng phải hiển thị ra).
+select k.ma_khach_hang, k.ho_ten, l.ten_loai_khach, h.ma_hop_dong, d.ten_dich_vu, h.ngay_lam_hop_dong, h.ngay_ket_thuc,
+sum( d.chi_phi_thue + hc.so_luong * dd.gia) as tong_tien from
+furama.khach_hang as k
+left join furama.hop_dong as h on k.ma_khach_hang = h.ma_khach_hang
+left join furama.loai_khach as l on k.ma_loai_khach = l.ma_loai_khach
+left join furama.dich_vu as d on h.ma_dich_vu = d.ma_dich_vu
+left join furama.hop_dong_chi_tiet as hc on h.ma_hop_dong = hc.ma_hop_dong
+left join furama.dich_vu_di_kem as dd on dd.ma_dich_vu_di_kem = hc.ma_dich_vu_di_kem
+group by k.ma_khach_hang, h.ma_hop_dong;
