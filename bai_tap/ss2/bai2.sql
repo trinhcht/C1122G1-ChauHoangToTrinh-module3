@@ -2,12 +2,12 @@ create database quan_ly_ban_hang;
 use quan_ly_ban_hang;
 create table customer(
 customer_id int primary key auto_increment,
-customer_name varchar(225),
+customer_name varchar(25),
 customer_age int
 );
 create table product(
 product_id int primary key auto_increment,
-product_name varchar(225),
+product_name varchar(25),
 product_price float
 );
 create table is_order(
