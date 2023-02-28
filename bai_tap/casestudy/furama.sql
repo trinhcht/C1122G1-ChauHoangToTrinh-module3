@@ -236,7 +236,8 @@ order by ho_ten;
 -- cách 3:
 
 -- 9.Thực hiện thống kê doanh thu theo tháng, nghĩa là tương ứng với mỗi tháng trong năm 2021 thì sẽ có bao nhiêu khách hàng thực hiện đặt phòng.
-select count(ngay_lam_hop_dong) as so_luong_khach,month(ngay_lam_hop_dong) as thang from furama.hop_dong as h
+select count(ngay_lam_hop_dong) as so_luong_khach,month(ngay_lam_hop_dong) as thang 
+from furama.hop_dong as h
 where ngay_lam_hop_dong between '2021-01-01' and '2021-12-31'
 group by year(ngay_lam_hop_dong), month(ngay_lam_hop_dong)
 having so_luong_khach >= any(
@@ -246,13 +247,15 @@ group by year(ngay_lam_hop_dong), month(ngay_lam_hop_dong))
 order by thang;
 
 -- 10.	Hiển thị thông tin tương ứng với từng hợp đồng thì đã sử dụng bao nhiêu dịch vụ đi kèm. Kết quả hiển thị bao gồm ma_hop_dong, ngay_lam_hop_dong, ngay_ket_thuc, tien_dat_coc, so_luong_dich_vu_di_kem (được tính dựa trên việc sum so_luong ở dich_vu_di_kem).
-select h.ma_hop_dong, h.ngay_lam_hop_dong, h.ngay_ket_thuc, h.tien_dat_coc, ifnull(sum(hc.so_luong),0)  from furama.hop_dong as h
+select h.ma_hop_dong, h.ngay_lam_hop_dong, h.ngay_ket_thuc, h.tien_dat_coc, ifnull(sum(hc.so_luong),0)  
+from furama.hop_dong as h
 left join furama.hop_dong_chi_tiet as hc on h.ma_hop_dong = hc.ma_hop_dong
 left join furama.dich_vu_di_kem as d on hc.ma_dich_vu_di_kem = d.ma_dich_vu_di_kem
 group by h.ma_hop_dong;
 
 -- 11.	Hiển thị thông tin các dịch vụ đi kèm đã được sử dụng bởi những khách hàng có ten_loai_khach là “Diamond” và có dia_chi ở “Vinh” hoặc “Quảng Ngãi”.
-select d.ma_dich_vu_di_kem, d.ten_dich_vu_di_kem from furama.loai_khach as l join furama.khach_hang as k on l.ma_loai_khach = k.ma_loai_khach
+select d.ma_dich_vu_di_kem, d.ten_dich_vu_di_kem from furama.loai_khach as l 
+join furama.khach_hang as k on l.ma_loai_khach = k.ma_loai_khach
 join furama.hop_dong as h on k.ma_khach_hang = h.ma_khach_hang
 join furama.hop_dong_chi_tiet as hc on h.ma_hop_dong = hc.ma_hop_dong
 join furama.dich_vu_di_kem as d on hc.ma_dich_vu_di_kem = d.ma_dich_vu_di_kem
@@ -266,7 +269,7 @@ left join khach_hang kh on hd.ma_khach_hang = kh.ma_khach_hang
 left join dich_vu dv on hd.ma_dich_vu = dv.ma_dich_vu
 left join hop_dong_chi_tiet hdct on hd.ma_hop_dong = hdct.ma_hop_dong
 where
-    (quarter(ngay_lam_hop_dong) = 4
+    (quarter(ngay_lam_hop_dong) = 4 -- hàm quarter trả về quý 4 <=> tháng 8 - 12
         and year(ngay_lam_hop_dong) = 2020)
         and hd.ma_hop_dong not in (month(ngay_lam_hop_dong) between 1 and 6
         and year(ngay_lam_hop_dong) = 2021)
@@ -277,7 +280,9 @@ select sum(hc.so_luong) as soluong, d.ma_dich_vu_di_kem, d.ten_dich_vu_di_kem
 from furama.hop_dong_chi_tiet as hc 
 join furama.dich_vu_di_kem as d on hc.ma_dich_vu_di_kem = d.ma_dich_vu_di_kem
 group by hc.ma_dich_vu_di_kem 
-having soluong >= all (select sum(hc.so_luong) as soluong from furama.hop_dong_chi_tiet as hc join furama.dich_vu_di_kem as d on hc.ma_dich_vu_di_kem = d.ma_dich_vu_di_kem
+having soluong >= all (select sum(hc.so_luong) as soluong 
+from furama.hop_dong_chi_tiet as hc 
+join furama.dich_vu_di_kem as d on hc.ma_dich_vu_di_kem = d.ma_dich_vu_di_kem
 group by hc.ma_dich_vu_di_kem );
 
 -- 14.	Hiển thị thông tin tất cả các Dịch vụ đi kèm chỉ mới được sử dụng một lần duy nhất. Thông tin hiển thị bao gồm ma_hop_dong, ten_loai_dich_vu, ten_dich_vu_di_kem, so_lan_su_dung (được tính dựa trên việc count các ma_dich_vu_di_kem).
@@ -286,16 +291,11 @@ select
     ldv.ten_loai_dich_vu,
     dvdk.ten_dich_vu_di_kem,
     count(hdct.ma_hop_dong_chi_tiet) as so_lan_su_dung
-from
-    hop_dong as hd
-        join
-    dich_vu as dv on hd.ma_dich_vu = dv.ma_dich_vu
-        join
-    loai_dich_vu as ldv on ldv.ma_loai_dich_vu = dv.ma_loai_dich_vu
-        join
-    hop_dong_chi_tiet as hdct on hd.ma_hop_dong = hdct.ma_hop_dong
-        join
-    dich_vu_di_kem as dvdk on dvdk.ma_dich_vu_di_kem = hdct.ma_dich_vu_di_kem
+from hop_dong as hd
+join dich_vu as dv on hd.ma_dich_vu = dv.ma_dich_vu
+join loai_dich_vu as ldv on ldv.ma_loai_dich_vu = dv.ma_loai_dich_vu
+join hop_dong_chi_tiet as hdct on hd.ma_hop_dong = hdct.ma_hop_dong
+join dich_vu_di_kem as dvdk on dvdk.ma_dich_vu_di_kem = hdct.ma_dich_vu_di_kem
 group by hdct.ma_dich_vu_di_kem
 having so_lan_su_dung = 1
 order by hd.ma_hop_dong;
