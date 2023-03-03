@@ -234,16 +234,15 @@ select distinct ho_ten
 from khach_hang
 order by ho_ten;
 -- cách 3:
+select ho_ten from khach_hang
+union
+select ho_ten from khach_hang;
 
 -- 9.Thực hiện thống kê doanh thu theo tháng, nghĩa là tương ứng với mỗi tháng trong năm 2021 thì sẽ có bao nhiêu khách hàng thực hiện đặt phòng.
 select count(ngay_lam_hop_dong) as so_luong_khach,month(ngay_lam_hop_dong) as thang 
 from furama.hop_dong as h
 where ngay_lam_hop_dong between '2021-01-01' and '2021-12-31'
-group by year(ngay_lam_hop_dong), month(ngay_lam_hop_dong)
-having so_luong_khach >= any(
-select count(ngay_lam_hop_dong) from furama.hop_dong as h
-where ngay_lam_hop_dong between '2021-01-01' and '2021-12-31'
-group by year(ngay_lam_hop_dong), month(ngay_lam_hop_dong))
+group by month(ngay_lam_hop_dong) 
 order by thang;
 
 -- 10.	Hiển thị thông tin tương ứng với từng hợp đồng thì đã sử dụng bao nhiêu dịch vụ đi kèm. Kết quả hiển thị bao gồm ma_hop_dong, ngay_lam_hop_dong, ngay_ket_thuc, tien_dat_coc, so_luong_dich_vu_di_kem (được tính dựa trên việc sum so_luong ở dich_vu_di_kem).
@@ -300,11 +299,12 @@ from furama.bo_phan as b join furama.nhan_vien as n on b.ma_bo_phan = n.ma_bo_ph
 join furama.trinh_do as t on t.ma_trinh_do = n.ma_trinh_do
 join furama.vi_tri as v on v.ma_vi_tri = n.ma_vi_tri
 join furama.hop_dong as h on n.ma_nhan_vien = h.ma_nhan_vien
+where year(h.ngay_lam_hop_dong) between 2020 and 2021
 group by h.ma_nhan_vien
 having so_hop_dong <=3;
 
 -- 16. Xóa những Nhân viên chưa từng lập được hợp đồng nào từ năm 2019 đến năm 2021.
-set sql_safe_updates = 0;
+-- set sql_safe_updates = 0;
 delete from furama.nhan_vien as n  
 where n.ma_nhan_vien not in(select h.ma_nhan_vien 
 from  furama.hop_dong as h
@@ -362,3 +362,24 @@ union all
 select nhan_vien.ma_nhan_vien as id, nhan_vien.ho_ten, nhan_vien.email, nhan_vien.so_dien_thoai, nhan_vien.dia_chi
 from nhan_vien
 group by id;
+
+select * from khach_hang;
+select * from hop_dong;
+select * from hop_dong_chi_tiet;
+select * from dịch_vu_di_kem;
+-- xóa ma_khach_hang = 1 => vào table hop_dong kiếm ma_khach_hang = 1 => ma_hop_dong = 1
+-- xóa ma_hop_dong = 1 => vào table ma_hop_dong có 1 => xóa ma_hop_dong = 1
+--------------
+-- xóa ma_hop_dong_chi_tiet (5 , 6)
+delete from hop_dong_chi_tiet
+where ma_hop_dong = 1;
+
+-- xóa ma_hop_dong = 1 
+delete from hop_dong
+where ma_hop_dong = 1;
+
+-- xóa ma_khach_hang = 1
+delete from khach_hang
+where ma_khach_hang = 1;
+
+
