@@ -1,8 +1,10 @@
-.color-mediumblue{
+.color-mediumblue:hover{
     color: mediumblue;
+    text-decoration:underline;
 }
-.color-blue{
+.color-blue:hover{
     color: dodgerblue;
+    text-decoration:underline;
 }
 h1{
     font-family: Linux Libertine;
