@@ -1,0 +1,87 @@
+.webp .g-nav .logo {
+    background-size: contain;
+}
+.webp .g-nav .logo {
+    background: url(https://www.narakathegame.com/pc/gw/20210601195432/img/logo_4e44e917.webp) center no-repeat;
+    background-size: contain;
+}
+.g-nav .logo {
+    position: absolute;
+    top: 9px;
+    left: 16px;
+    width: 201px;
+    height: 78px;
+    z-index: 10;
+}
+.g-nav input, .g-nav textarea, .g-nav a, .g-nav div, .g-nav button, .g-nav select {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    outline: none;
+}
+.g-nav textarea, .g-nav input, .g-nav button, .g-nav a {
+    font-size: inherit;
+    font-weight: inherit;
+    color: inherit;
+}
+.g-nav a, .g-nav a:hover {
+    text-decoration: none;
+}
+.g-nav a, .g-nav button {
+    cursor: pointer;
+}
+.g-nav * {
+    -webkit-tap-highlight-color: transparent;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+}
+input, textarea, a, div, button, select {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    outline: none;
+}
+textarea, input, button, a {
+    font-size: inherit;
+    font-weight: inherit;
+    color: inherit;
+}
+a, a:hover {
+    text-decoration: none;
+}
+a, button {
+    cursor: pointer;
+}
+* {
+    -webkit-tap-highlight-color: transparent;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+}
+user agent stylesheet
+a:-webkit-any-link {
+    color: -webkit-link;
+    cursor: pointer;
+    text-decoration: underline;
+}
+.g-nav.en {
+    font-family: 'Cinzel', serif;
+}
+body {
+    font-family: 'HK Grotesk', sans-serif;
+}
+body {
+    position: relative;
+    color: #000000;
+}
+html[lang=en] {
+    font-family: RobotoCondensed, sans-serif;
+    word-break: keep-all;
+}
+html {
+    font-size: 16px;
+    font-family: sans-serif;
+}
