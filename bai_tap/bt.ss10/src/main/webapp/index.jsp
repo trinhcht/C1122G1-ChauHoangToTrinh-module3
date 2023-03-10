@@ -6,7 +6,7 @@
     <title>JSP - Danh sách khách hàng</title>
 </head>
 <body>
-<h1><%= "Danh sách khách hàng!" %>
+<h1><%= "Danh sách khách hàng" %>
 </h1>
 <br/>
 <a href="customer">Danh sách khách hàng</a>

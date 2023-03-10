@@ -42,7 +42,7 @@
     }
   </style>
 </head>
-<body>
+<body style="background-image: url('https://i.pinimg.com/736x/4a/1e/00/4a1e00dd0cd830b07e9d88b8def79c15.jpg'); background-size: cover; width: ">
 <h1 class="customer">Danh sách khách hàng</h1>
 <table action="/customer" border="1" class="myTable">
   <tr class="total">
