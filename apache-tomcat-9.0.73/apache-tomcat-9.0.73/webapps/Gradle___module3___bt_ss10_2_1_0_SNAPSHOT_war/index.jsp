@@ -5,13 +5,13 @@
     <title></title>
 </head>
 <body>
-<h1 style="color: red"><%= "Calculator" %>
+<h1><%= "Calculator" %>
 </h1>
 <br/>
 <form action="/calculator" method="post">
     <table>
         <tr>
-            <td style="color: blueviolet">
+            <td>
                 First operand:
             </td>
             <td>
@@ -19,20 +19,20 @@
             </td>
         </tr>
         <tr>
-            <td style="color: darkmagenta">
+            <td>
                 Operator:
             </td>
             <td>
-                <select name="operator" style="color: violet">
-                    <option value="+" style="color: darkblue">Addition</option>
-                    <option value="-" style="color: deeppink">Subtraction</option>
-                    <option value="*" style="color: red">Multiplication</option>
-                    <option value="/" style="color: aqua">Division</option>
+                <select name="operator">
+                    <option value="+">Addition</option>
+                    <option value="-">Subtraction</option>
+                    <option value="*">Multiplication</option>
+                    <option value="/">Division</option>
                 </select>
             </td>
         </tr>
         <tr>
-            <td style="color: indianred">
+            <td>
                 Second Operand:
             </td>
             <td>
@@ -42,7 +42,7 @@
         <tr>
             <td></td>
             <td>
-                <button type="submit" value="calculate" style="color: crimson">Calculator</button>
+                <button type="submit" value="calculate">Calculator</button>
             </td>
         </tr>
     </table>
