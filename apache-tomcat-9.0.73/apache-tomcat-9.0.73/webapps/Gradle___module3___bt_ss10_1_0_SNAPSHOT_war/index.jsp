@@ -9,6 +9,6 @@
 <h1><%= "Danh sách khách hàng!" %>
 </h1>
 <br/>
-<a href="customer">Danh sách khách hàng</a>
+<a href="customer-servlet">Danh sách khách hàng</a>
 </body>
 </html>
