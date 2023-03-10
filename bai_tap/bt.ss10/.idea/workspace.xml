@@ -4,14 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5d887af4-b3ec-4685-9a62-fe0618c69225" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/../../apache-tomcat-9.0.73/apache-tomcat-9.0.73/webapps/ROOT/index.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/../../apache-tomcat-9.0.73/apache-tomcat-9.0.73/webapps/ROOT/index.jsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../apache-tomcat-9.0.73/apache-tomcat-9.0.73/webapps/ROOT/list.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/../../apache-tomcat-9.0.73/apache-tomcat-9.0.73/webapps/ROOT/list.jsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/gradle.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/index.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/index.jsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/list.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/list.jsp" afterDir="false" />
-    </list>
+    <list default="true" id="5d887af4-b3ec-4685-9a62-fe0618c69225" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -183,7 +176,7 @@
       <option name="presentableId" value="Default" />
       <updated>1678418157831</updated>
       <workItem from="1678418159012" duration="5396000" />
-      <workItem from="1678436717691" duration="1990000" />
+      <workItem from="1678436717691" duration="2449000" />
     </task>
     <servers />
   </component>
