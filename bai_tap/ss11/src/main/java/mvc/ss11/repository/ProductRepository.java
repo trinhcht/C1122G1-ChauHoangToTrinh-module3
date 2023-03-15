@@ -20,36 +20,38 @@ public class ProductRepository implements IProductRepository {
 
     @Override
     public void save(Product product) {
-        product.setId(productList.size() + 1);
+        productList.add(product.getId(),product);
+    }
+
+    @Override
+    public void update( Product product) {
+//        for (int i = 0; i < productList.size(); i++) {
+//            if (productList.get(i).getId() == product.getId()){
+//                productList.set(i,productList.get(i));
+//            }
+//        }
         productList.add(product);
     }
 
     @Override
-    public void update(Product product) {
-        for (int i = 0; i < productList.size(); i++) {
-            if (productList.get(i).getId() == product.getId()){
-                productList.set(i,productList.get(i));
-            }
-        }
-    }
-
-    @Override
     public Product findById(int id) {
-        for (int i = 0 ; i <= productList.size() ; i++) {
-            if (productList.get(i).getId() == id){
-                return productList.get(i);
-            }
-        }
-        return null;
+//        for (int i = 0 ; i <= productList.size() ; i++) {
+//            if (productList.get(i).getId() == id){
+//                return productList.get(i);
+//            }
+//        }
+//        return null;
+        return  productList.get(id);
     }
 
     @Override
     public void delete(Product product) {
-        for (int i = 0; i < productList.size(); i++) {
-            if (product.getId() == productList.get(i).getId()) {
-                productList.remove(i);
-            }
-        }
+//        for (int i = 0; i < productList.size(); i++) {
+//            if (product.getId() == productList.get(i).getId()) {
+//                productList.remove(i);
+//            }
+//        }
+        productList.remove(product.getId());
     }
 
     @Override
