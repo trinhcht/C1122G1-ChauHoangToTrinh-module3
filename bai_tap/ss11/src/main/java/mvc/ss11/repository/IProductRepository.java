@@ -12,7 +12,7 @@ public interface IProductRepository {
 
     Product findById(int id);
 
-    void delete(Product product);
+    void delete(int id);
 
     List<Product> search(String name);
 }
