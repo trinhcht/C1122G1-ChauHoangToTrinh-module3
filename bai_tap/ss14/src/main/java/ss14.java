@@ -3,11 +3,11 @@ import java.util.Scanner;
 public class ss14 {
     private static Scanner scanner = new Scanner(System.in);
     public static void main(String[] args) {
-        System.out.print("Nhập hệ số bậc 2, a = ");
+        System.out.print("Nhập a = ");
         float a = ss14.scanner.nextFloat();
-        System.out.print("Nhập hệ số bậc 1, b = ");
+        System.out.print("Nhập b = ");
         float b = ss14.scanner.nextFloat();
-        System.out.print("Nhập hằng số tự do, c = ");
+        System.out.print("Nhập c = ");
         float c = scanner.nextFloat();
         ss14.phuongTrinhBac2(a, b, c);
     }
