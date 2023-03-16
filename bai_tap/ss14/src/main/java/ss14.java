@@ -9,9 +9,9 @@ public class ss14 {
         float b = ss14.scanner.nextFloat();
         System.out.print("Nhập hằng số tự do, c = ");
         float c = scanner.nextFloat();
-        ss14.giaiPTBac2(a, b, c);
+        ss14.phuongTrinhBac2(a, b, c);
     }
-    public static void giaiPTBac2(float a, float b, float c) {
+    public static void phuongTrinhBac2(float a, float b, float c) {
         if (a == 0) {
             if (b == 0) {
                 System.out.println("Phương trình vô nghiệm!");
