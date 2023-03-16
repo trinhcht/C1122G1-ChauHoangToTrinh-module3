@@ -78,16 +78,16 @@ public class UserRepositoryImpl implements IUserRepository {
 
     @Override
     public boolean deleteUser(int id) throws SQLException {
+        boolean rowDelete = false;
         Connection connection = BaseRepository.getConnection();
-
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(DELETE_USERS_SQL);
             preparedStatement.setInt(1, id);
-            return preparedStatement.executeUpdate() > 0;
+            rowDelete= preparedStatement.executeUpdate() > 0;
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return false;
+        return rowDelete;
     }
 
     @Override
@@ -134,7 +134,6 @@ public class UserRepositoryImpl implements IUserRepository {
     public List<User> sortByNameUser() {
         List<User> users = new ArrayList<>();
         Connection connection = BaseRepository.getConnection();
-
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(SORT_BY_NAME_USER);
             ResultSet resultSet = preparedStatement.executeQuery();

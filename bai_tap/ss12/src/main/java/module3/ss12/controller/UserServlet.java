@@ -126,7 +126,7 @@ public class UserServlet extends HttpServlet {
             }
         } else {
             try {
-                request.getRequestDispatcher("views/sort.jsp").forward(request, response);
+                request.getRequestDispatcher("views/list.jsp").forward(request, response);
             } catch (ServletException | IOException e) {
                 e.printStackTrace();
             }
@@ -152,14 +152,12 @@ public class UserServlet extends HttpServlet {
         }
     }
 
-    private void deleteUser(HttpServletRequest request, HttpServletResponse response) throws SQLException {
+    private void deleteUser(HttpServletRequest request, HttpServletResponse response) throws SQLException, ServletException, IOException {
         int id = Integer.parseInt(request.getParameter("id"));
         this.userService.deleteUser(id);
-        try {
-            response.sendRedirect("user");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        List<User> userList = userService.selectAllUser();
+        request.setAttribute("listUser", userList);
+        response.sendRedirect("/user");
     }
 
     private void editUser(HttpServletRequest request, HttpServletResponse response) {

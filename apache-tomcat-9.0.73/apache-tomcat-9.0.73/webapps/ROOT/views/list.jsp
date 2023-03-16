@@ -51,7 +51,7 @@
                 <a href="/user?action=edit&id=${user.id}">Edit</a>
             </td>
             <td>
-                <button type="button" onclick="deleteUser('${user.id}','${user.name}')" class="btn btn-danger"
+                <button type="button" onclick="deleteUser(${user.id})" class="btn btn-danger"
                         data-toggle="modal" data-target="#exampleModal">
                     Delete
                 </button>
@@ -71,7 +71,7 @@
             </div>
             <form action="/user?action=delete" method="post">
                 <div class="modal-body">
-                    <input hidden type="text" id="deleteId" name="deleteId">
+                    <input hidden type="text" id="deleteId" name="id">
                     <span> Xác nhận xoá </span><span id="deleteName"></span>?
                 </div>
                 <div class="modal-footer">

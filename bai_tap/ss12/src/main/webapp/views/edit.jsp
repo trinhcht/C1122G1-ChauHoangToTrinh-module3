@@ -20,29 +20,29 @@
 </head>
 <body>
 <h1>Edit</h1>
-<button type="button" class="btn btn-primary"><a href="/user">List user</a></button>
+<button type="button"><a href="/user">List user</a></button>
 <form action="user?action=edit" method="post">
-    <div class="mb-3">
-        <label for="id" class="form-label">ID</label>
-        <input type="hidden" class="form-control" id="id" name="id" aria-describedby="emailHelp"
+    <div>
+        <label >ID</label>
+        <input id="id" name="id"
                value="${user.getId()}">
     </div>
-    <div class="mb-3">
-        <label for="name" class="form-label">ID</label>
-        <input type="hidden" class="form-control" id="name" name="name" aria-describedby="emailHelp"
+    <div>
+        <label>ID</label>
+        <input id="name" name="name"
                value="${user.getName()}">
     </div>
-    <div class="mb-3">
-        <label for="email" class="form-label">ID</label>
-        <input type="hidden" class="form-control" id="email" name="email" aria-describedby="emailHelp"
+    <div>
+        <label>ID</label>
+        <input id="email" name="email"
                value="${user.getEmail()}">
     </div>
-    <div class="mb-3">
-        <label for="country" class="form-label">ID</label>
-        <input type="hidden" class="form-control" id="country" name="country" aria-describedby="emailHelp"
+    <div>
+        <label>ID</label>
+        <input id="country" name="country"
                value="${user.getCountry()}">
     </div>
-    <button type="submit" class="btn btn-primary">Update user</button>
+    <button type="submit">Update user</button>
 </form>
 <!-- Optional JavaScript -->
 <!-- jQuery first, then Popper.js, then Bootstrap JS -->
