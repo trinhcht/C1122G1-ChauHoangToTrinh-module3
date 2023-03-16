@@ -1,6 +1,6 @@
 package module3.ss13.controller;
 
-import module3.ss13.dao.UserDao;
+import module3.ss13.dao.UserRepository;
 import module3.ss13.model.User;
 
 import javax.servlet.*;
@@ -13,10 +13,10 @@ import java.util.List;
 @WebServlet(name = "UserServlet", urlPatterns = "/users")
 public class UserServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
-    UserDao userDAO = new UserDao();
+    UserRepository userDAO = new UserRepository();
 
     public void init() {
-        userDAO = new UserDao();
+        userDAO = new UserRepository();
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response)

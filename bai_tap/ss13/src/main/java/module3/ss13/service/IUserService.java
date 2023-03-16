@@ -1,11 +1,11 @@
-package module3.ss13.dao;
+package module3.ss13.service;
 
 import module3.ss13.model.User;
 
 import java.sql.SQLException;
 import java.util.List;
 
-public interface IUserRepository {
+public interface IUserService {
     public void insertUser(User user) throws SQLException;
 
     public User selectUser(int id);

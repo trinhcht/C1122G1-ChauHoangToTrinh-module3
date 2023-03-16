@@ -6,7 +6,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UserDao implements IUserRepository {
+public class UserRepository implements IUserRepositoryIplm {
     private String jdbcURL = "jdbc:mysql://localhost:3307/demo?useSSL=false";
     private String jdbcUsername = "root";
     private String jdbcPassword = "123456";
@@ -23,16 +23,38 @@ public class UserDao implements IUserRepository {
 
     public void insertUser(User user) throws SQLException {
         System.out.println(INSERT_USERS_SQL);
-        try (Connection connection = DBConnection.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(INSERT_USERS_SQL)) {
+        Savepoint savepoint = null;
+        Connection connection = DBConnection.getConnection();
+        PreparedStatement preparedStatement = null;
+        try {
+            connection.setAutoCommit(false);
+            preparedStatement = connection.prepareStatement("insert into users(id, name, email, country) value(?,?,?,?)");
             preparedStatement.setInt(1, user.getId());
             preparedStatement.setString(2, user.getName());
             preparedStatement.setString(3, user.getEmail());
             preparedStatement.setString(4, user.getCountry());
             System.out.println(preparedStatement);
             preparedStatement.executeUpdate();
+            savepoint = connection.setSavepoint();
+
+            preparedStatement = connection.prepareStatement("\"insert into users(id, name, email, country) value(?,?,?,?)\"");
+            preparedStatement.setInt(1, user.getId());
+            preparedStatement.setString(2, user.getName());
+            preparedStatement.setString(3, user.getEmail());
+            preparedStatement.setString(4, user.getCountry());
+            System.out.println(preparedStatement);
+            preparedStatement.executeUpdate();
+
+            connection.commit();
+
         } catch (SQLException e) {
             printSQLException(e);
+            if (savepoint != null){
+                connection.rollback();
+                connection.commit();
+            }
+        }finally {
+            DBConnection.close();
         }
     }
 

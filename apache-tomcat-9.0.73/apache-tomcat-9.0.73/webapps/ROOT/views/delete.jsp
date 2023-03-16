@@ -20,29 +20,29 @@
 </head>
 <body>
 <h1>Delete</h1>
-<button><a href="/user">List user</a></button>
+<button type="button" class="btn btn-primary"><a href="/user">List user</a></button>
 <form action="user?action=delete" method="post">
-  <div>
-    <label>ID</label>
-    <input id="id" name="id"
+  <div class="mb-3">
+    <label for="id" class="form-label">ID</label>
+    <input type="hidden" class="form-control" id="id" name="id" aria-describedby="emailHelp"
            value="${user.getId()}">
   </div>
-  <div>
-    <label>ID</label>
-    <input id="name" name="name"
+  <div class="mb-3">
+    <label for="name" class="form-label">ID</label>
+    <input type="hidden" class="form-control" id="name" name="name" aria-describedby="emailHelp"
            value="${user.getName()}">
   </div>
-  <div>
-    <label>ID</label>
-    <input id="email" name="email"
+  <div class="mb-3">
+    <label for="email" class="form-label">ID</label>
+    <input type="hidden" class="form-control" id="email" name="email" aria-describedby="emailHelp"
            value="${user.getEmail()}">
   </div>
-  <div>
-    <label>ID</label>
-    <input id="country" name="country"
+  <div class="mb-3">
+    <label for="country" class="form-label">ID</label>
+    <input type="hidden" class="form-control" id="country" name="country" aria-describedby="emailHelp"
            value="${user.getCountry()}">
   </div>
-  <button type="submit">Delete user</button>
+  <button type="submit" class="btn btn-primary">Delete user</button>
 </form>
 <!-- Optional JavaScript -->
 <!-- jQuery first, then Popper.js, then Bootstrap JS -->

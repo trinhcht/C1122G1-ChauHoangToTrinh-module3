@@ -51,7 +51,7 @@
                 <a href="/user?action=edit&id=${user.id}">Edit</a>
             </td>
             <td>
-                <button type="button" onclick="deleteUser(${user.id})"
+                <button type="button" onclick="deleteUser(${user.id})" class="btn btn-danger"
                         data-toggle="modal" data-target="#exampleModal">
                     Delete
                 </button>
