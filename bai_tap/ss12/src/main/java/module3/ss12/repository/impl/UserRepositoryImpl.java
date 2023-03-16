@@ -8,12 +8,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UserRepositoryImpl implements IUserRepository {
-    private static final String INSERT_USERS_SQL = "INSERT INTO users (name, email, country) VALUES (?, ? ,?);";
+    private static final String INSERT_USERS_SQL = "INSERT INTO users (id, name, email, country) VALUES (?,?, ? ,?);";
     private static final String SELECT_USER_BY_ID = "select id,name,email,country from users where id =?";
     private static final String SELECT_ALL_USERS = "SELECT * FROM users";
     private static final String DELETE_USERS_SQL = "DELETE FROM users WHERE id = ?;";
     private static final String UPDATE_USERS_SQL = "UPDATE users SET name = ?, email = ?, country = ? WHERE id = ?;";
-    private static final String SELECT_USER_BY_COUNTRY = "SELECT id,name,email,country FROM users WHERE country =?";
+    private static final String SELECT_USER_BY_COUNTRY = "SELECT id,name,email,country FROM users WHERE country like ?";
     private static final String SORT_BY_NAME_USER = "SELECT * FROM users ORDER BY name";
 
 
@@ -22,9 +22,10 @@ public class UserRepositoryImpl implements IUserRepository {
         Connection connection = BaseRepository.getConnection();
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(INSERT_USERS_SQL);
-            preparedStatement.setString(1, user.getName());
-            preparedStatement.setString(2, user.getEmail());
-            preparedStatement.setString(3, user.getCountry());
+            preparedStatement.setInt(1, user.getId());
+            preparedStatement.setString(2, user.getName());
+            preparedStatement.setString(3, user.getEmail());
+            preparedStatement.setString(4, user.getCountry());
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -119,6 +120,7 @@ public class UserRepositoryImpl implements IUserRepository {
                 int id = resultSet.getInt("id");
                 String name = resultSet.getString("name");
                 String email = resultSet.getString("email");
+                country = resultSet.getString("country");
                 User user = new User(id, name, email, country);
                 users.add(user);
             }

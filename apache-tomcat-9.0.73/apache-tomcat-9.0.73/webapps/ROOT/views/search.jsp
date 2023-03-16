@@ -2,14 +2,14 @@
   Created by IntelliJ IDEA.
   User: Vĩ Trần
   Date: 3/14/2023
-  Time: 7:50 PM
+  Time: 8:34 PM
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!doctype html>
 <html lang="en">
 <head>
-    <title>Edit</title>
+    <title>Search</title>
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -19,31 +19,35 @@
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 </head>
 <body>
-<h1>Edit</h1>
-<button type="button" class="btn btn-primary"><a href="/user">List user</a></button>
-<form action="user?action=edit" method="post">
-    <div class="mb-3">
-        <label for="id" class="form-label">ID</label>
-        <input type="hidden" class="form-control" id="id" name="id" aria-describedby="emailHelp"
-               value="${user.getId()}">
-    </div>
-    <div class="mb-3">
-        <label for="name" class="form-label">ID</label>
-        <input type="hidden" class="form-control" id="name" name="name" aria-describedby="emailHelp"
-               value="${user.getName()}">
-    </div>
-    <div class="mb-3">
-        <label for="email" class="form-label">ID</label>
-        <input type="hidden" class="form-control" id="email" name="email" aria-describedby="emailHelp"
-               value="${user.getEmail()}">
-    </div>
-    <div class="mb-3">
-        <label for="country" class="form-label">ID</label>
-        <input type="hidden" class="form-control" id="country" name="country" aria-describedby="emailHelp"
-               value="${user.getCountry()}">
-    </div>
-    <button type="submit" class="btn btn-primary">Update user</button>
-</form>
+<h1>Search</h1>
+<table class="table table-bordered table-inverse table-responsive">
+    <thead class="thead-inverse">
+    <tr>
+        <th>STT</th>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Country</th>
+        <th>Edit</th>
+        <th>Delete</th>
+    </tr>
+    </thead>
+    <tbody>
+    <c:forEach items='${requestScope["users"]}' var="user" varStatus="stt">
+        <tr>
+            <td>${stt.count}</td>
+            <td>${user.getId()}"/></td>
+            <td><<a href="user?action=view&id=${user.getId()}">${user.getName()}</a></td>
+            <td>${user.getEmail()}</td>
+            <td>${user.getCountry()}</td>
+            <td><a href="user?action=edit&id=${user.getid}">Edit</a></td>
+            <td><a href="user?action=delete&id=${user.getid}">Delete</a></td>
+        </tr>
+    </c:forEach>
+    </tbody>
+</table>
+</body>
+
 <!-- Optional JavaScript -->
 <!-- jQuery first, then Popper.js, then Bootstrap JS -->
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
@@ -55,7 +59,4 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
         integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
         crossorigin="anonymous"></script>
-<button type="submit" class="btn btn-primary">Delete user</button>
-</form>
-</body>
 </html>

@@ -103,7 +103,7 @@ public class UserServlet extends HttpServlet {
                     throw new RuntimeException(e);
                 }
                 break;
-            case "find":
+            case "search":
                 findUser(request, response);
                 break;
             case "sort":
@@ -135,9 +135,9 @@ public class UserServlet extends HttpServlet {
 
     private void findUser(HttpServletRequest request, HttpServletResponse response) {
         String country = request.getParameter("country");
-        List<User> users = this.userService.selectUserByCountry(country);
-        request.setAttribute("user", users);
-        if (users == null) {
+        List<User> user = this.userService.selectUserByCountry(country);
+        request.setAttribute("user", user);
+        if (user == null) {
             try {
                 request.getRequestDispatcher("views/error-404.jsp").forward(request, response);
             } catch (ServletException | IOException e) {
@@ -145,7 +145,7 @@ public class UserServlet extends HttpServlet {
             }
         } else {
             try {
-                request.getRequestDispatcher("views/search.jsp").forward(request, response);
+                request.getRequestDispatcher("views/list.jsp").forward(request, response);
             } catch (ServletException | IOException e) {
                 e.printStackTrace();
             }
@@ -179,10 +179,11 @@ public class UserServlet extends HttpServlet {
     }
 
     private void createUser(HttpServletRequest request, HttpServletResponse response) {
+        int id = Integer.parseInt(request.getParameter("id"));
         String name = request.getParameter("name");
         String email = request.getParameter("email");
         String country = request.getParameter("country");
-        this.userService.insertUser(new User(name, email, country));
+        this.userService.insertUser(new User(id, name, email, country));
         request.setAttribute("message", "New user was created!");
         try {
             request.getRequestDispatcher("views/create.jsp").forward(request, response);
