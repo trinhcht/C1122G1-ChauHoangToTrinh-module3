@@ -1,9 +1,9 @@
 package module3.ss13.model;
 
 public class User {
-    protected int id;
-    protected String name;
-    protected String email;
+    private int id;
+    private String name;
+    private String email;
     protected String country;
 
     public User() {}
