@@ -4,7 +4,7 @@ create index index_title on books(title);
 drop index index_title on books;
 
 -- Tạo 1 view để lấy ra danh sách các quyển sách đã được mượn, có hiển thị thêm cột số lần đã được mượn--
-create view view_borows_book as select b.title, count(bo.b_id) as `amount`
+create view view_borows_book as select b.title, count(bo.b_id) as amount
 from books as b
 join borrows as bo on b.b_id= bo.b_id
 group by b.b_id
