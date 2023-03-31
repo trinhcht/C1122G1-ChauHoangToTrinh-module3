@@ -259,3 +259,137 @@ join furama.hop_dong as h on k.ma_khach_hang = h.ma_khach_hang
 join furama.hop_dong_chi_tiet as hc on h.ma_hop_dong = hc.ma_hop_dong
 join furama.dich_vu_di_kem as d on hc.ma_dich_vu_di_kem = d.ma_dich_vu_di_kem
 where ten_loai_khach = 'Diamond' and(dia_chi like'%vinh' or dia_chi like '%Quang ngai');
+
+-- 12.	Hiển thị thông tin ma_hop_dong, ho_ten (nhân viên), ho_ten (khách hàng), so_dien_thoai (khách hàng), ten_dich_vu, so_luong_dich_vu_di_kem (được tính dựa trên việc sum so_luong ở dich_vu_di_kem), tien_dat_coc của tất cả các dịch vụ đã từng được khách hàng đặt vào 3 tháng cuối năm 2020 nhưng chưa từng được khách hàng đặt vào 6 tháng đầu năm 2021.
+select hd.ma_hop_dong, nv.ho_ten, kh.ho_ten, kh.so_dien_thoai, dv.ma_dich_vu, dv.ten_dich_vu, ifnull(sum(hdct.so_luong),0) as so_luong_dich_vu_di_kem
+from hop_dong as hd
+left join nhan_vien nv on hd.ma_nhan_vien = nv.ma_nhan_vien
+left join khach_hang kh on hd.ma_khach_hang = kh.ma_khach_hang
+left join dich_vu dv on hd.ma_dich_vu = dv.ma_dich_vu
+left join hop_dong_chi_tiet hdct on hd.ma_hop_dong = hdct.ma_hop_dong
+where(quarter(ngay_lam_hop_dong) = 4 and year(ngay_lam_hop_dong) = 2020) -- hàm quarter trả về quý 4 <=> tháng 8 - 12
+and hd.ma_hop_dong not in (month(ngay_lam_hop_dong) between 1 and 6
+and year(ngay_lam_hop_dong) = 2021)
+group by hd.ma_hop_dong;
+ 
+-- 13.	Hiển thị thông tin các Dịch vụ đi kèm được sử dụng nhiều nhất bởi các Khách hàng đã đặt phòng. (Lưu ý là có thể có nhiều dịch vụ có số lần sử dụng nhiều như nhau).
+select sum(hc.so_luong) as soluong, d.ma_dich_vu_di_kem, d.ten_dich_vu_di_kem 
+from furama.hop_dong_chi_tiet as hc 
+join furama.dich_vu_di_kem as d on hc.ma_dich_vu_di_kem = d.ma_dich_vu_di_kem
+group by hc.ma_dich_vu_di_kem 
+having soluong >= all (select sum(hc.so_luong) as soluong 
+from furama.hop_dong_chi_tiet as hc 
+join furama.dich_vu_di_kem as d on hc.ma_dich_vu_di_kem = d.ma_dich_vu_di_kem
+group by hc.ma_dich_vu_di_kem );
+
+-- 14.	Hiển thị thông tin tất cả các Dịch vụ đi kèm chỉ mới được sử dụng một lần duy nhất. Thông tin hiển thị bao gồm ma_hop_dong, ten_loai_dich_vu, ten_dich_vu_di_kem, so_lan_su_dung (được tính dựa trên việc count các ma_dich_vu_di_kem).
+
+select dvdk.ma_dich_vu_di_kem, dvdk.ten_dich_vu_di_kem, count(hdct.ma_hop_dong_chi_tiet) as so_lan_su_dung
+from hop_dong as hd
+join dich_vu as dv on hd.ma_dich_vu = dv.ma_dich_vu
+join loai_dich_vu as ldv on ldv.ma_loai_dich_vu = dv.ma_loai_dich_vu
+left join hop_dong_chi_tiet as hdct on hd.ma_hop_dong = hdct.ma_hop_dong
+left join dich_vu_di_kem as dvdk on dvdk.ma_dich_vu_di_kem = hdct.ma_dich_vu_di_kem
+group by hdct.ma_dich_vu_di_kem
+having so_lan_su_dung = 1;
+
+-- 15.	Hiển thi thông tin của tất cả nhân viên bao gồm ma_nhan_vien, ho_ten, ten_trinh_do, ten_bo_phan, so_dien_thoai, dia_chi mới chỉ lập được tối đa 3 hợp đồng từ năm 2020 đến 2021.
+select n.ma_nhan_vien,n. ho_ten, t.ten_trinh_do, b.ten_bo_phan, n.so_dien_thoai, n.dia_chi, count(h.ma_nhan_vien) as so_hop_dong  
+from furama.bo_phan as b join furama.nhan_vien as n on b.ma_bo_phan = n.ma_bo_phan
+join furama.trinh_do as t on t.ma_trinh_do = n.ma_trinh_do
+join furama.vi_tri as v on v.ma_vi_tri = n.ma_vi_tri
+join furama.hop_dong as h on n.ma_nhan_vien = h.ma_nhan_vien
+where year(h.ngay_lam_hop_dong) between 2020 and 2021
+group by h.ma_nhan_vien
+having so_hop_dong <=3;
+
+-- 16. Xóa những Nhân viên chưa từng lập được hợp đồng nào từ năm 2019 đến năm 2021.
+-- set sql_safe_updates = 0;
+delete from furama.nhan_vien as n  
+where n.ma_nhan_vien not in(select h.ma_nhan_vien 
+from  furama.hop_dong as h
+where ngay_lam_hop_dong between '2019-01-01' and '2021-12-31'
+);
+
+-- Task 17.	Cập nhật thông tin những khách hàng có ten_loai_khach từ Platinum lên Diamond,
+-- chỉ cập nhật những khách hàng đã từng đặt phòng với Tổng Tiền thanh toán trong năm 2021 là lớn hơn 10.000.000 VNĐ.
+update khach_hang kh
+inner join hop_dong hd
+on kh.ma_khach_hang = hd.ma_khach_hang
+inner join hop_dong_chi_tiet hdct
+on hdct.ma_hop_dong = hd.ma_hop_dong
+inner join dich_vu_di_kem dvdk
+on dvdk.ma_dich_vu_di_kem = hdct.ma_dich_vu_di_kem
+inner join dich_vu dv
+on dv.ma_dich_vu = hd.ma_dich_vu
+set kh.ma_loai_khach = (
+select ma_loai_khach from loai_khach where ten_loai_khach = 'Diamond')
+where kh.ma_loai_khach = (
+select ma_loai_khach from loai_khach where ten_loai_khach = 'Platinium')
+and year(hd.ngay_lam_hop_dong) = 2021
+and dv.chi_phi_thue + hdct.so_luong * dvdk.gia >= 10000000;
+
+-- Task 18.	Xóa những khách hàng có hợp đồng trước năm 2021 (chú ý ràng buộc giữa các bảng).
+delete from hop_dong_chi_tiet as hdct
+where hdct.ma_hop_dong in (
+select * from (
+select hdct.ma_hop_dong
+from hop_dong_chi_tiet as hdct
+join hop_dong as hd on hd.ma_hop_dong = hdct.ma_hop_dong
+where year(hd.ngay_ket_thuc) <2021
+) hop_dong_truoc_2021
+);
+
+delete from hop_dong as hd
+where year(hd.ngay_ket_thuc) <2021;
+
+delete from khach_hang
+where ma_khach_hang not in
+( select * from (select hd.ma_khach_hang
+ from khach_hang as kh
+ join hop_dong as hd on hd.ma_khach_hang = kh.ma_khach_hang
+ ) khach_hang_thue_2021);
+ 
+ select hd.ma_khach_hang
+ from khach_hang as kh
+ join hop_dong as hd on hd.ma_khach_hang = kh.ma_khach_hang;
+
+-- Task 19.	Cập nhật giá cho các dịch vụ đi kèm được sử dụng trên 10 lần trong năm 2020 lên gấp đôi.
+update dich_vu_di_kem
+set gia = gia * 2
+where ma_dich_vu_di_kem in (
+	select hdct.ma_dich_vu_di_kem from hop_dong hd 
+    inner join hop_dong_chi_tiet hdct on hd.ma_hop_dong = hdct.ma_hop_dong
+	where year(hd.ngay_lam_hop_dong) = 2020
+	group by hdct.ma_dich_vu_di_kem
+	having sum(hdct.so_luong) > 10
+);
+select * from dich_vu_di_kem;
+
+-- Task 20.	Hiển thị thông tin của tất cả các nhân viên và khách hàng có trong hệ thống(bao gồm những khách hàng hay nhân viên đã bị xoá),
+-- Thông tin hiển thị bao gồm id (ma_nhan_vien, ma_khach_hang), ho_ten, email, so_dien_thoai, ngay_sinh, dia_chi).
+select khach_hang.ma_khach_hang as id, khach_hang.ho_ten, khach_hang.email, khach_hang.so_dien_thoai, khach_hang.dia_chi
+from khach_hang
+union all
+select nhan_vien.ma_nhan_vien as id, nhan_vien.ho_ten, nhan_vien.email, nhan_vien.so_dien_thoai, nhan_vien.dia_chi
+from nhan_vien
+group by id;
+
+select * from khach_hang;
+select * from hop_dong;
+select * from hop_dong_chi_tiet;
+select * from dịch_vu_di_kem;
+-- xóa ma_khach_hang = 1 => vào table hop_dong kiếm ma_khach_hang = 1 => ma_hop_dong = 1
+-- xóa ma_hop_dong = 1 => vào table ma_hop_dong có 1 => xóa ma_hop_dong = 1
+--------------
+-- xóa ma_hop_dong_chi_tiet (5 , 6)
+delete from hop_dong_chi_tiet
+where ma_hop_dong = 1;
+
+-- xóa ma_hop_dong = 1 
+delete from hop_dong
+where ma_hop_dong = 1;
+
+-- xóa ma_khach_hang = 1
+delete from khach_hang
+where ma_khach_hang = 1;
