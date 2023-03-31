@@ -12,7 +12,7 @@ order by count(bo.b_id) desc
 limit 1;
 
 -- Thông kê các đầu sách chưa được mượn
-select b.title,b.b_id,count(b.b_id) as `amount` 
+select b.title,b.b_id 
 from books as b
 join borrows as bo on bo.b_id = b.b_id
 where bo.b_id not in (
