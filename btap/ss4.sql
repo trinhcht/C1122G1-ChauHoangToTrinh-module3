@@ -4,12 +4,25 @@ insert into borrows(s_id, b_id, borrow_date, return_date)
 value (2, 4, '2022-12-15', '2022-12-29');
 
 --  Thông kê các đầu sách được mượn nhiều nhất
-select title, count(bo.b_id)
+
+create view muon_nhieu as
+select title, count(bo.b_id) as dem
 from borrows as bo
 join books as b on b.b_id = bo.b_id
 group by bo.b_id
-order by count(bo.b_id) desc
-limit 1;
+order by count(bo.b_id) desc;
+
+select title, max(dem)
+from muon_nhieu;
+
+SET GLOBAL sql_mode=(SELECT REPLACE(@@sql_mode,'ONLY_FULL_GROUP_BY',''));
+
+select  max(dem) from 
+(select title, count(bo.b_id) as dem
+from borrows as bo
+join books as b on b.b_id = bo.b_id
+group by bo.b_id
+order by count(bo.b_id) desc) as max;
 
 -- Thông kê các đầu sách chưa được mượn
 select b.title,b.b_id 

@@ -1,7 +1,9 @@
 -- ss2 : Thiết kế CSDL quản lý thư viện dựa vào sơ đồ Entity
-
+-- Tạo cơ sở dữ liệu có tên là : library
 create database library;
 use library;
+
+-- Chuyển đổi sơ đồ Entity thành các table
 create table student(
 s_id int primary key auto_increment,
 s_name varchar(25),
@@ -80,16 +82,19 @@ value (1, 1, '2022-12-12', '2022-12-13'),
 
 --  ss3: Từ CSDL của  ss2_query_database , nhập dữ liệu cho có dữ liệu cho các bảng như bên trên
 
+-- Lấy ra toàn bộ sách có trong thư viện, cùng với tên thể loại và tác giả
 select b.title, a.a_name, c.c_name
 from books as b
 inner join authors as a on b.a_id = a.a_id
 inner join category as c on b.c_id = c.c_id;
 
+-- Lấy ra danh sách các học viên đã từng mượn sách và sắp xếp danh sách theo theo tên từ a->z
 select s_name
 from student
 where s_id in (select s_id from borrows as bo)
 order by s_name;
 
+-- Lấy ra  2 quyển sách được mượn nhiều nhất
 select title, count(bo.b_id)
 from borrows as bo
 join books as b on b.b_id = bo.b_id
