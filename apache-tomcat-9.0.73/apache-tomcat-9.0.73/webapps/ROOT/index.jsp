@@ -3,7 +3,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>JSP - Hello World</title>
+    <title></title>
 </head>
 <c:redirect url="/sieuThi"/>
 <body>

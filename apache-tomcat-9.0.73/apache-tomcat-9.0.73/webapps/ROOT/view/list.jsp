@@ -1,6 +1,6 @@
 <%--
   Created by IntelliJ IDEA.
-  User: ACER
+  User: Vĩ Trần
   Date: 3/23/2023
   Time: 4:00 AM
   To change this template use File | Settings | File Templates.
@@ -41,20 +41,20 @@
 
         h1 {
             text-align: center;
-            margin-top: 20px
+            margin-top: 20px;
         }
     </style>
 </head>
 <body>
 <div class="container">
-<h1>LIST</h1>
-<a flag="info"
-   class="dt-button buttons-colvis btn btn-white btn-primary btn-bold" data-toggle="tooltip"
-   title='Thêm' href="sieuThi?action=create">
+    <h1>LIST</h1>
+    <a flag="info"
+       class="dt-button buttons-colvis btn btn-white btn-primary btn-bold" data-toggle="tooltip"
+       title='Thêm' href="sieuThi?action=create">
             <span>
                 <i class="fa fa-plus-circle bigger-110 purple">Thêm</i>
             </span>
-</a>
+    </a>
 
     <table class="table">
         <thead>
@@ -79,39 +79,38 @@
                 <td>${sieuThi.moTa}</td>
                 <td>
                     <!-- Button trigger modal -->
-                    <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#modelId${sieuThi.id}">
+                    <button type="button" class="btn btn-primary btn-lg" data-toggle="modal"
+                            data-target="#modelId${sieuThi.id}" style="background-color: #a52834">
                         <a flag="info"
                            class="dt-button buttons-colvis btn btn-white btn-primary btn-bold" data-toggle="tooltip"
-                           title='Xoa' href='/sieuThi=action?id=${sieuThi.id}'>
+                           title='Xoa' href='/sieuThi?action=delete&id=${sieuThi.id}' style="background-color: #a52834">
             <span>
-			    <i class="fa fa-trash-o bigger-110 pink"></i> xóa
+			    <i class="fa fa-trash-o bigger-110 pink"></i> Xóa
             </span>
                         </a>
                     </button>
 
                     <!-- Modal -->
-                    <div class="modal fade" id="modelId${sieuThi.id}" tabindex="-1" role="dialog" aria-labelledby="modelTitleId"
+                    <div class="modal fade" id="modelId${sieuThi.id}" tabindex="-1" role="dialog"
+                         aria-labelledby="modelTitleId"
                          aria-hidden="true">
                         <div class="modal-dialog" role="document">
                             <div class="modal-content">
                                 <div class="modal-header">
                                     <h5 class="modal-title">Bạn có muốn xóa ${sieuThi.name}</h5>
                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
+                                        <span aria-hidden="true"></span>
                                     </button>
                                 </div>
                                 <div class="modal-body">
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                    <button type="button" class="btn btn-primary"><a href="/sieuThi=action?id=${sieuThi.id}">Save</a></button>
+                                    <button type="button" class="btn btn-primary"><a href="/sieuThi">Xóa</a></button>
                                 </div>
                             </div>
                         </div>
                     </div>
-
-
-
                 </td>
             </tr>
         </c:forEach>

@@ -1,6 +1,6 @@
 <%--
   Created by IntelliJ IDEA.
-  User: ACER
+  User: Vĩ Trần
   Date: 3/23/2023
   Time: 10:01 AM
   To change this template use File | Settings | File Templates.
@@ -58,27 +58,13 @@
       <input type="text"
              class="form-control" name="ltpName" id="ltpName" aria-describedby="helpId" placeholder="Vui lòng nhập tên loai thực phẩm">
     </div>
-
-
-<%--    <div class="dropdown open">--%>
-<%--      <button class="btn btn-secondary dropdown-toggle" type="button" id="triggerId" data-toggle="dropdown"--%>
-<%--              aria-haspopup="true"--%>
-<%--              aria-expanded="false">--%>
-<%--        Dropdown--%>
-<%--      </button>--%>
-<%--      <div class="dropdown-menu" aria-labelledby="triggerId">--%>
-<%--        <button class="dropdown-item" href="#">Action</button>--%>
-<%--        <button class="dropdown-item disabled" href="#">Disabled action</button>--%>
-<%--      </div>--%>
-<%--    </div>--%>
-
     <div class="form-group">
       <label for="moTa">Mô tả</label>
       <input type="text"
              class="form-control" name="moTa" id="moTa" aria-describedby="helpId" placeholder="Nhập mô tả thêm (Nếu có)">
     </div>
 
-    <button type="button" class="btn btn-primary">Submit</button>
+    <button type="submit" class="btn btn-primary">Save</button>
 
   </div>
 </form>
