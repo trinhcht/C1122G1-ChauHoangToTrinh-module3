@@ -3,6 +3,7 @@
     margin: 0;
     padding: 0;
     color: #c93838;
+    background: plum;
 }
 
 .col-1 {
@@ -65,7 +66,7 @@
 }
 
 .header {
-    background-color: white;
+    background-color: plum;
 }
 
 #menu ul {
@@ -82,11 +83,11 @@
 }
 
 .menu li {
+    margin: 10px;
+    padding: 5px;
     position: relative;
     float: left;
     list-style: none;
-    margin: 10px;
-    padding: 5px;
     display: inline-block;
 }
 
@@ -94,17 +95,17 @@
     width: 130px;
     height: 30px;
     display: block;
-    text-decoration: none;
     text-align: center;
-    line-height: 10px;
+    text-decoration: none;
     color: blueviolet;
+    line-height: 10px;
 }
 
 ul li a {
     width: 120px;
     text-align: left;
-    padding-left: 10px;
     color: #494848;
+    padding-left: 10px;
 }
 
 li a {
@@ -112,11 +113,11 @@ li a {
 }
 
 li a:hover {
-    color: #c93838;
+    color: pink;
 }
 
 img {
     width: 390px;
     height: 250px;
-    border-radius: 10px;
+    border-radius: 15px;
 }
