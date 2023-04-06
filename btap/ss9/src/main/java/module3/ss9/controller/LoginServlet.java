@@ -14,7 +14,7 @@ public class LoginServlet extends HttpServlet {
     private static List<User> userList = new ArrayList<>();
 
     static {
-        userList.add(new User(1, "admin", "123456"));
+        userList.add(new User(1, "admin", "123abc"));
     }
 
     @Override
