@@ -12,10 +12,9 @@ join books as b on b.b_id = bo.b_id
 group by bo.b_id
 order by count(bo.b_id) desc;
 
-select title, max(dem)
-from muon_nhieu;
+select title, dem
+from muon_nhieu where dem = (select max(dem) from muon_nhieu);
 
-SET GLOBAL sql_mode=(SELECT REPLACE(@@sql_mode,'ONLY_FULL_GROUP_BY',''));
 
 select  max(dem) from 
 (select title, count(bo.b_id) as dem

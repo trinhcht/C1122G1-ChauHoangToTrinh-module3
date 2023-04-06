@@ -59,8 +59,8 @@
       display: inline-block;
       width: 400px;
       height: 40px;
-      margin-bottom: 10px;
-      border-radius: 5px;
+      margin-bottom: 20px;
+      border-radius: 10px;
       border: none;
       background-color: paleturquoise;
       color: mediumblue;
@@ -100,7 +100,7 @@
                class="form-control" name="password" id="password" placeholder="Input your password">
       </div>
         <h3 style="margin-top: 50px">${messengerLogin}</h3>
-      <button type="submit" class="btn btn-primary" style="margin: 26px">Submit</button>
+      <button type="submit" class="btn btn-primary" style="margin: 30px; width: 50px; height: 30px">Submit</button>
     </div>
   </div>
 </form>
