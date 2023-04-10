@@ -26,7 +26,7 @@
             width: 100%;
         }
         .table, th {
-            border: 1px solid #868585;
+            border: 1px solid #3f1c8a;
         }
         th {
             text-align: center;
@@ -48,7 +48,7 @@
             font-size: 35px;
         }
         td {
-            border: 1px solid;
+            border: 1px solid #3f1c8a;
         }
     </style>
 </head>
