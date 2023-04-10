@@ -1,12 +1,12 @@
 package module3.ss11.model;
 
 public class Book {
-        private Integer id;
-        private String title;
-        private Integer pageSize;
+    private Integer id;
+    private String title;
+    private Integer pageSize;
 
-        private String author;
-        private Category category;
+    private String author;
+    private Category category;
 
     public Book() {
     }
@@ -17,6 +17,14 @@ public class Book {
         this.pageSize = pageSize;
         this.author = author;
         this.category = category;
+    }
+
+    public Book(Integer id, String title, Integer pageSize, String author) {
+        this.id = id;
+        this.title = title;
+        this.pageSize = pageSize;
+        this.author = author;
+
     }
 
     public Integer getId() {
