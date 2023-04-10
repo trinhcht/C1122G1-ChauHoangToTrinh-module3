@@ -28,10 +28,6 @@
         .table, th {
             border: 1px solid #868585;
         }
-        /*table{*/
-        /*    border-collapse:collapse;*/
-        /*    width:100%;*/
-        /*}*/
         th {
             text-align: center;
             padding: 10px;
@@ -42,9 +38,6 @@
         .table tr:nth-child(even) {
             background-color: white;
         }
-        /*.table tr:nth-child(1){*/
-        /*    background-color:#b6effb;*/
-        /*}*/
         h1 {
             margin-top: 100px;
             margin-bottom: 50px;
