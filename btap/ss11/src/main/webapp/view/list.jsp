@@ -88,7 +88,6 @@
     <tr>
       <td>${book.id}</td>
       <td>${book.title}</td>
-<%--      <td>${book.pageSize}</td>--%>
       <td>${book.pageSize}</td>
       <td>${book.author}</td>
       <td>${book.category.nameCategory}</td>
