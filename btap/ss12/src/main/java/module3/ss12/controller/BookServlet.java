@@ -42,7 +42,11 @@ public class BookServlet extends HttpServlet {
                 }
                 break;
             case "search":
-                formSearch(request, response);
+                try {
+                    formSearch(request, response);
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
                 break;
             default:
                 showBookList(request, response);
@@ -54,10 +58,10 @@ public class BookServlet extends HttpServlet {
         request.setCharacterEncoding("UTF-8");
         response.setContentType("text/html;charset=UTF-8");
         String action = request.getParameter("action");
-        String tittleSearch = request.getParameter("tittleSearch");
-        if (tittleSearch == null) {
-            tittleSearch = "";
-        }
+//        String tittleSearch = request.getParameter("titleSearch");
+//        if (tittleSearch == null) {
+//            tittleSearch = "";
+//        }
         if (action == null) {
             action = "";
         }
@@ -79,14 +83,22 @@ public class BookServlet extends HttpServlet {
             case "delete":
                 deleteBook(request, response);
                 break;
-
             default:
                 showBookList(request, response);
                 break;
         }
     }
-    private void formSearch(HttpServletRequest request, HttpServletResponse response) {
-
+    private void formSearch(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException {
+        String name = request.getParameter("name");
+        List<Book> bookList = this.iBookService.findByName(name);
+        request.setAttribute("bookList", bookList);
+        try {
+            request.setAttribute("nameSearch",name);
+            request.setAttribute("bookList", iBookService.findByName(name));
+        } catch (java.sql.SQLException throwables) {
+            throw new RuntimeException(throwables);
+        }
+        request.getRequestDispatcher("/view/list.jsp").forward(request, response);
     }
 
     private void showEdit(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException {
@@ -107,12 +119,8 @@ public class BookServlet extends HttpServlet {
 
     private void showBookList(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String name = request.getParameter("name");
-        try {
-            request.setAttribute("nameSearch",name);
-            request.setAttribute("bookList", iBookService.findAll(name));
-        } catch (java.sql.SQLException throwables) {
-            throw new RuntimeException(throwables);
-        }
+        request.setAttribute("nameSearch",name);
+        request.setAttribute("bookList", iBookService.selectAllBook());
         request.getRequestDispatcher("/view/list.jsp").forward(request, response);
     }
 
@@ -129,7 +137,7 @@ public class BookServlet extends HttpServlet {
         request.setAttribute("mess", mess);
         List<Book> bookList = null;
         try {
-            bookList = iBookService.findAll(null);
+            bookList = iBookService.findByName(null);
         } catch (java.sql.SQLException throwables) {
             throw new RuntimeException(throwables);
         }

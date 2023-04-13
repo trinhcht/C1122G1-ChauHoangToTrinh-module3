@@ -14,12 +14,15 @@ public class BookRepository implements IBookRepository {
     private static final String SELECT_BY_ID = "select b_id, title, page_size,authors.a_id,authors.a_name,category.c_id,category.c_name from books\n" +
             "left join category on category.c_id = books.c_id\n" +
             "left join authors on authors.a_id = books.a_id where b_id = ?";
+    private static final String SELECT_ALL_BOOK = "select b_id, title, page_size,authors.a_id,authors.a_name,category.c_id,category.c_name from books\n" +
+            "left join category on category.c_id = books.c_id\n" +
+            "left join authors on authors.a_id = books.a_id";
     private static final String INSERT_BOOK_SQL = "insert into books(title, page_size, books.a_id, books.c_id) values(?,?,?,?)";
     private static final String UPDATE_BOOK_SQL = "update books set title = ?,page_size = ?, a_id = ?, c_id = ? where b_id = ?;";
     private final String DELETE_BOOK = "delete from books where b_id = ?";
 
     @Override
-    public List<Book> findAll(String name) {
+    public List<Book> findByName(String name) {
         Connection connection = BaseRepository.getConnection();
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
@@ -28,7 +31,7 @@ public class BookRepository implements IBookRepository {
             try {
                 preparedStatement = connection.prepareStatement("select b_id, title, page_size, books.c_id, books.a_id, category.c_id, category.c_name, authors.a_id, authors.a_name from books " +
                         "left join category on category.c_id = books.c_id " +
-                        "left join authors on authors.a_id = books.a_id where title like concat('%',?,'%')");
+                        "left join authors on authors.a_id = books.a_id where books.title =?");
                 preparedStatement.setString(1, name);
                 resultSet = preparedStatement.executeQuery();
                 while (resultSet.next()) {
@@ -36,9 +39,9 @@ public class BookRepository implements IBookRepository {
                     String title = resultSet.getString("title");
                     int pageSize = resultSet.getInt("page_size");
                     int authorId = resultSet.getInt("books.a_id");
-                    String authorName = resultSet.getString("a_name");
-                    int idCategory = resultSet.getInt("books.c_id");
-                    String nameCategory = resultSet.getString("c_name");
+                    String authorName = resultSet.getString("authors.a_name");
+                    int idCategory = resultSet.getInt("category.c_id");
+                    String nameCategory = resultSet.getString("category.c_name");
                     Category category = new Category(idCategory, nameCategory);
                     Author author = new Author(authorId, authorName);
                     bookList2.add(new Book(id, title, pageSize, author, category));
@@ -48,6 +51,32 @@ public class BookRepository implements IBookRepository {
             }
         }
         return bookList2;
+    }
+
+    @Override
+    public List<Book> selectAllBook() {
+        List<Book> bookList1 = new ArrayList<>();
+        Connection connection = BaseRepository.getConnection();
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(SELECT_ALL_BOOK);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                int id = resultSet.getInt("b_id");
+                String title = resultSet.getString("title");
+                int pageSize = resultSet.getInt("page_size");
+                int authorId = resultSet.getInt("authors.a_id");
+                String authorName = resultSet.getString("a_name");
+                int idCategory = resultSet.getInt("category.c_id");
+                String nameCategory = resultSet.getString("c_name");
+                Category category = new Category(idCategory, nameCategory);
+                Author author = new Author(authorId, authorName);
+                Book book = new Book(id, title, pageSize, author, category);
+                bookList1.add(book);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return bookList1;
     }
 
     @Override

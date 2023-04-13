@@ -14,11 +14,16 @@ public class BookService implements IBookService {
     private IBookRepository iBookRepository = new BookRepository();
 
     @Override
-    public List<Book> findAll(String name) throws SQLException {
-        if(name == null){
+    public List<Book> findByName(String name) throws SQLException {
+        if (name == null){
             name = "";
         }
-        return iBookRepository.findAll(name);
+        return iBookRepository.findByName(name);
+    }
+
+    @Override
+    public List<Book> selectAllBook() {
+        return iBookRepository.selectAllBook();
     }
 
     @Override

@@ -8,7 +8,8 @@ import java.sql.SQLException;
 import java.util.List;
 
 public interface IBookRepository {
-    List<Book> findAll(String name) throws SQLException;
+    List<Book> findByName(String name) throws SQLException;
+    List<Book> selectAllBook();
 
     void save(Book book) throws SQLException;
 

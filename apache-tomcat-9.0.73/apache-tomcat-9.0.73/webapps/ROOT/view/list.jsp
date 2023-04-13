@@ -72,6 +72,11 @@
 <body>
 <h1> Book List</h1>
 <a class="btn btn-primary" style="margin-left: 80px;margin-bottom: 30px" href="/book?action=create">Create new book</a>
+<form class="mb-3" action="/book">
+  <input type="hidden" name="action" value="search">
+  <input type="text" name="name" id="name">
+  <button type="submit" class="btn btn-primary">Search</button>
+</form>
 <table class="table" style="width: 600px">
   <thead>
   <tr style="background: #c49ca6">
@@ -91,7 +96,6 @@
       <td>${book.pageSize}</td>
       <td>${book.author.authorName}</td>
       <td>${book.category.nameCategory}</td>
-
       <td>
         <button type="button" onclick="deleteInfo('${book.id}','${book.title}')"  class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal">
           <i class="fas fa-trash-alt"></i>
