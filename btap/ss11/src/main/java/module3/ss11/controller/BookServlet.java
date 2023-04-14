@@ -1,5 +1,6 @@
 package module3.ss11.controller;
 
+import module3.ss11.model.Author;
 import module3.ss11.model.Book;
 import module3.ss11.model.Category;
 import module3.ss11.service.IBookService;
@@ -11,13 +12,14 @@ import javax.servlet.*;
 import javax.servlet.http.*;
 import javax.servlet.annotation.*;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
 @WebServlet(name = "BookServlet", value = "/book")
 public class BookServlet extends HttpServlet {
     private IBookService iBookService = new BookService();
-    private ICategoryService iCategoryService = new CategoryService();
+
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -29,61 +31,57 @@ public class BookServlet extends HttpServlet {
         }
         switch (action) {
             case "create":
-                showCreate(request, response);
+                try {
+                    showCreate(request, response);
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
                 break;
             case "edit":
-                showEdit(request, response);
+                try {
+                    showEdit(request, response);
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
                 break;
             case "search":
-                performSearch(request, response);
+                try {
+                    formSearch(request, response);
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
                 break;
             default:
                 showBookList(request, response);
                 break;
         }
     }
-
-    private void performSearch(HttpServletRequest request, HttpServletResponse response) {
-
-    }
-
-    private void showEdit(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        int id = Integer.parseInt(request.getParameter("id"));
-        Book book = iBookService.findById(id);
-        request.setAttribute("book", book);
-        request.setAttribute("categoryList", iCategoryService.bookCategoryList());
-        request.getRequestDispatcher("/view/edit.jsp").forward(request, response);
-
-    }
-
-    private void showCreate(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-        request.setAttribute("categoryList", iCategoryService.bookCategoryList());
-        request.getRequestDispatcher("/view/create.jsp").forward(request, response);
-    }
-
-    private void showBookList(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        request.setAttribute("bookList", iBookService.findAll());
-        request.getRequestDispatcher("/view/list.jsp").forward(request, response);
-    }
-
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.setCharacterEncoding("UTF-8");
         response.setContentType("text/html;charset=UTF-8");
         String action = request.getParameter("action");
-        String tittleSearch = request.getParameter("tittleSearch");
-        if (tittleSearch == null) {
-            tittleSearch = "";
-        }
+//        String tittleSearch = request.getParameter("titleSearch");
+//        if (tittleSearch == null) {
+//            tittleSearch = "";
+//        }
         if (action == null) {
             action = "";
         }
         switch (action) {
             case "create":
-                performCreate(request, response);
+                try {
+                    formCreate(request, response);
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
                 break;
             case "edit":
-                performEdit(request, response);
+                try {
+                    formEdit(request, response);
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
                 break;
             case "delete":
                 deleteBook(request, response);
@@ -91,10 +89,46 @@ public class BookServlet extends HttpServlet {
             default:
                 showBookList(request, response);
                 break;
-
         }
+    }
+    private void formSearch(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException {
+        String name = request.getParameter("name");
+        List<Book> bookList = this.iBookService.findByName(name);
+        request.setAttribute("bookList", bookList);
+        try {
+            request.setAttribute("nameSearch",name);
+            request.setAttribute("bookList", iBookService.findByName(name));
+        } catch (java.sql.SQLException throwables) {
+            throw new RuntimeException(throwables);
+        }
+        request.getRequestDispatcher("/view/list.jsp").forward(request, response);
+    }
+
+    private void showEdit(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException {
+        int id = Integer.parseInt(request.getParameter("id"));
+        Book book = iBookService.findById(id);
+        request.setAttribute("book", book);
+        request.setAttribute("categoryList",iBookService.categoryList());
+        request.setAttribute("authorList",iBookService.authorList());
+        request.getRequestDispatcher("/view/edit.jsp").forward(request, response);
 
     }
+
+    private void showCreate(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException, SQLException {
+        request.setAttribute("categoryList",iBookService.categoryList());
+        request.setAttribute("authorList",iBookService.authorList());
+        request.getRequestDispatcher("/view/create.jsp").forward(request, response);
+    }
+
+    private void showBookList(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String name = request.getParameter("name");
+        request.setAttribute("nameSearch",name);
+        request.setAttribute("bookList", iBookService.selectAllBook());
+        request.getRequestDispatcher("/view/list.jsp").forward(request, response);
+    }
+
+
+
 
     private void deleteBook(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         int id = Integer.parseInt(request.getParameter("deleteId"));
@@ -104,41 +138,38 @@ public class BookServlet extends HttpServlet {
             mess = "Xóa Thành công";
         }
         request.setAttribute("mess", mess);
-        List<Book> bookList = iBookService.findAll();
+        List<Book> bookList = null;
+        try {
+            bookList = iBookService.findByName(null);
+        } catch (java.sql.SQLException throwables) {
+            throw new RuntimeException(throwables);
+        }
         request.setAttribute("bookList",bookList);
         RequestDispatcher dispatcher = request.getRequestDispatcher("/view/list.jsp");
         dispatcher.forward(request,response);
     }
 
-    private void performEdit(HttpServletRequest request, HttpServletResponse response) {
+    private void formEdit(HttpServletRequest request, HttpServletResponse response) throws IOException, SQLException {
         int id = Integer.parseInt(request.getParameter("id"));
         String title = request.getParameter("title");
         int pageSize = Integer.parseInt(request.getParameter("pageSizeBook"));
-        String author = request.getParameter("author");
+        int authorId=Integer.parseInt(request.getParameter("authorId"));
         int categoryID = Integer.parseInt(request.getParameter("categoryID"));
-
-        Category categorySel = null;
-        List<Category> categoryList= new ArrayList<>();
-        categoryList = iCategoryService.findAllCategory();
-        for(Category category: categoryList){
-            if(category.getIdCategory().equals(categoryID)){
-                categorySel = category;
-                break;
-            }
-        }
-        Book book = new Book(id, title, pageSize, author);
-        book.setCategory(categorySel);
+        Author author= new Author(authorId);
+        Category category=new Category(categoryID);
+        Book book = new Book(title,pageSize,author,category);
         iBookService.updateBook(id, book);
+        response.sendRedirect("/book");
     }
 
-    private void performCreate(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        int id = Integer.parseInt(request.getParameter("idBook"));
+    private void formCreate(HttpServletRequest request, HttpServletResponse response) throws IOException, SQLException {
         String title = request.getParameter("titleBook");
         int pageSize = Integer.parseInt(request.getParameter("pageSize"));
-        String author = request.getParameter("author");
+        int authorId=Integer.parseInt(request.getParameter("authorID"));
         int categoryID = Integer.parseInt(request.getParameter("categoryID"));
-        Category category = iCategoryService.findByID(categoryID);
-        Book book = new Book(id, title, pageSize, author, category);
+        Author author= new Author(authorId);
+        Category category = new Category(categoryID);
+        Book book = new Book( title, pageSize, author, category);
         iBookService.save(book);
         response.sendRedirect("/book");
     }

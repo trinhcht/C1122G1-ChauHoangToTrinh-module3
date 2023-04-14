@@ -5,13 +5,10 @@ public class Book {
     private String title;
     private Integer pageSize;
 
-    private String author;
+    private Author author;
     private Category category;
 
-    public Book() {
-    }
-
-    public Book(Integer id, String title, Integer pageSize, String author, Category category) {
+    public Book(Integer id, String title, Integer pageSize, Author author, Category category) {
         this.id = id;
         this.title = title;
         this.pageSize = pageSize;
@@ -19,12 +16,11 @@ public class Book {
         this.category = category;
     }
 
-    public Book(Integer id, String title, Integer pageSize, String author) {
-        this.id = id;
+    public Book(String title, Integer pageSize, Author author, Category category) {
         this.title = title;
         this.pageSize = pageSize;
         this.author = author;
-
+        this.category = category;
     }
 
     public Integer getId() {
@@ -51,11 +47,11 @@ public class Book {
         this.pageSize = pageSize;
     }
 
-    public String getAuthor() {
+    public Author getAuthor() {
         return author;
     }
 
-    public void setAuthor(String author) {
+    public void setAuthor(Author author) {
         this.author = author;
     }
 

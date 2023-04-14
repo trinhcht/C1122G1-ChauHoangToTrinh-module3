@@ -2,8 +2,8 @@
 <%--
   Created by IntelliJ IDEA.
   User: Vĩ Trần
-  Date: 4/11/2023
-  Time: 10:54 AM
+  Date: 4/10/2023
+  Time: 2:35 PM
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
@@ -57,20 +57,8 @@
     <label for="pageSize">Input page size: </label>
     <input type="text" class="form-control" name="pageSizeBook" id="pageSize" value="${book.pageSize}">
 
-<%--    <label for="author">Input author: </label>--%>
-<%--    <input type="text" class="form-control" name="author" id="author" value="${book.author}">--%>
-
-    <label for="authorID" id="authorID">Input Author name: </label>
-    <select class="form-select" name="authorId" >
-      <c:forEach var="author" items="${authorList}">
-        <c:if test="${author.authorId == book.author.authorId}">
-          <option value="${author.authorId}" selected>${author.authorName}</option>
-        </c:if>
-        <c:if test="${author.authorId != book.author.authorId}">
-          <option value="${author.authorId}">${author.authorName}</option>
-        </c:if>
-      </c:forEach>
-    </select>
+    <label for="author">Input author: </label>
+    <input type="text" class="form-control" name="author" id="author" value="${book.author}">
 
     <label for="categoryID" id="categoryID">Input category name: </label>
     <select class="form-select" name="categoryID" >
@@ -87,7 +75,6 @@
     <input type="submit" value="Update" class="btn btn-secondary mt-3" style="background: #3d3c3c; margin-top: 10px;margin-left: 200px">
   </form>
 </div>
-<script src="../js/bootstrap.bundle.js">
-</script>
+<script src="../js/bootstrap.bundle.js"></script>
 </body>
 </html>
